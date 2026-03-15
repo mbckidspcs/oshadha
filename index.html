@@ -26,68 +26,152 @@
             letter-spacing: 2px;
             transition: all 0.5s ease;
         }
-        #crash-counter { font-size: 16px; color: #ff0055; font-weight: bold; margin-top: 5px; text-transform: uppercase; }
+        #stats-bar { display: flex; gap: 20px; align-items: center; }
+        #crash-counter { font-size: 16px; color: #ff0055; font-weight: bold; text-transform: uppercase; }
+        #coin-counter { font-size: 16px; color: #ffff00; font-weight: bold; text-transform: uppercase; }
+
+        /* Shop UI */
+        #shop-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.8);
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            cursor: pointer;
+            pointer-events: auto;
+            font-weight: bold;
+            z-index: 100;
+            text-transform: uppercase;
+        }
+        #shop-menu {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; max-width: 600px;
+            max-height: 80vh;
+            background: rgba(0, 5, 10, 0.98);
+            border: 3px solid #00f2ff;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+            color: #fff;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.3);
+        }
+        .shop-section-title {
+            border-bottom: 1px solid #00f2ff;
+            padding-bottom: 5px;
+            margin-top: 10px;
+            color: #00f2ff;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .shop-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #333;
+            background: rgba(255,255,255,0.05);
+        }
+        .item-info div { font-weight: bold; }
+        .item-info small { color: #888; display: block; font-size: 11px; }
+        .buy-btn {
+            padding: 8px 15px;
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            min-width: 100px;
+        }
+        .buy-btn:disabled { background: #444; cursor: not-allowed; color: #888; }
+        .buy-btn.owned { background: #00ff88; color: #000; }
+
+        /* Off-track warning */
+        #warning-overlay {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff0055;
+            font-size: 24px;
+            font-weight: bold;
+            display: none;
+            text-shadow: 0 0 15px #ff0055;
+            z-index: 200;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border: 2px solid #ff0055;
+            text-transform: uppercase;
+        }
 
         /* Mobile Controls */
         #mobile-controls {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             left: 0;
             width: 100%;
-            height: 180px;
+            height: 220px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding: 0 30px;
+            padding: 0 40px;
             box-sizing: border-box;
             z-index: 50;
             pointer-events: none;
         }
 
         .touch-btn {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00f2ff;
-            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
-            border-radius: 12px;
+            border: 3px solid #00f2ff;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #00f2ff;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 16px;
             pointer-events: auto;
             user-select: none;
             -webkit-user-select: none;
             touch-action: none;
             text-transform: uppercase;
         }
-        .touch-btn:active { background: #00f2ff; color: #000; box-shadow: 0 0 30px #00f2ff; }
+        .touch-btn:active { background: #00f2ff; color: #000; box-shadow: 0 0 40px #00f2ff; transform: scale(0.95); }
 
         #joystick-container {
-            width: 140px;
-            height: 140px;
+            width: 180px;
+            height: 180px;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 50%;
             position: relative;
             pointer-events: auto;
-            border: 2px solid #00f2ff;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+            border: 3px solid #00f2ff;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
         }
         #joystick-knob {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             background: #00f2ff;
             border-radius: 50%;
             position: absolute;
-            top: 40px;
-            left: 40px;
-            box-shadow: 0 0 25px #00f2ff;
+            top: 50px;
+            left: 50px;
+            box-shadow: 0 0 30px #00f2ff;
         }
 
-        .right-controls { display: flex; flex-direction: column; gap: 15px; align-items: flex-end; }
-        .pedal-group { display: flex; gap: 15px; }
+        .right-controls { display: flex; flex-direction: column; gap: 20px; align-items: flex-end; }
+        .pedal-group { display: flex; gap: 20px; }
 
         #start-screen {
             position: fixed;
@@ -129,11 +213,60 @@
         <button class="btn-glow" onclick="startGame()">INITIATE</button>
     </div>
 
+    <button id="shop-btn" onclick="toggleShop()">GARAGE</button>
+
+    <div id="shop-menu">
+        <h2 style="color: #00f2ff; margin: 0; font-family: monospace;">NEON_GARAGE</h2>
+        <div id="shop-balance" style="color: #ffff00; font-weight: bold; font-size: 20px;">DATA: 0</div>
+        
+        <div class="shop-section-title">Support</div>
+        <div class="shop-item">
+            <div class="item-info">
+                <div>REPAIR INTEGRITY</div>
+                <small>Restores 50% health</small>
+            </div>
+            <button class="buy-btn" onclick="buyUpgrade('repair', 50)">50 DATA</button>
+        </div>
+
+        <div class="shop-section-title">Vehicles</div>
+        
+        <div class="shop-item">
+            <div class="item-info">
+                <div>BMW M4 (Neon Edition)</div>
+                <small>Balanced Handling | Max Speed: 2.8</small>
+            </div>
+            <button class="buy-btn" id="car-bmw" onclick="buyCar('bmw', 1500, 0x0088ff, 2.8, 0.045)">1500 DATA</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="item-info">
+                <div>FERRARI F40 (Retro-Wave)</div>
+                <small>High Acceleration | Max Speed: 3.5</small>
+            </div>
+            <button class="buy-btn" id="car-ferrari" onclick="buyCar('ferrari', 4000, 0xff0022, 3.5, 0.06)">4000 DATA</button>
+        </div>
+
+        <div class="shop-item">
+            <div class="item-info">
+                <div>LAMBORGHINI AVENTADOR</div>
+                <small>V12 Hypercore | Max Speed: 5.0</small>
+            </div>
+            <button class="buy-btn" id="car-lambo" onclick="buyCar('lambo', 10000, 0xffaa00, 5.0, 0.08)">10000 DATA</button>
+        </div>
+
+        <button class="btn-glow" style="padding: 10px; font-size: 14px; margin-top: 10px; width: 100%;" onclick="toggleShop()">EXIT GARAGE</button>
+    </div>
+
     <div id="ui">
         <div id="location-display">SYSTEM_BOOT</div>
         <div id="speedometer">000</div>
-        <div id="crash-counter">INTEGRITY: 100%</div>
+        <div id="stats-bar">
+            <div id="crash-counter">INTEGRITY: 100%</div>
+            <div id="coin-counter">DATA: 0</div>
+        </div>
     </div>
+
+    <div id="warning-overlay">OFF TRACK: RE-ENTER OR DISCONNECT</div>
 
     <div id="mobile-controls">
         <div id="joystick-container">
@@ -141,38 +274,44 @@
         </div>
         <div class="right-controls">
             <div class="pedal-group">
-                <div class="touch-btn" id="btn-flight" style="width: 60px; height: 60px; border-color: #ff00ff; color: #ff00ff;">FLT</div>
-                <div class="touch-btn" id="btn-drift" style="border-color: #ffff00; color: #ffff00;">DRIFT</div>
+                <div class="touch-btn" id="btn-flight" style="width: 70px; height: 70px; border-color: #ff00ff; color: #ff00ff; font-size: 12px;">FLT (F)</div>
             </div>
             <div class="pedal-group">
                 <div class="touch-btn" id="btn-brake" style="border-color: #ff0055; color: #ff0055;">STOP</div>
-                <div class="touch-btn" id="btn-gas" style="border-color: #00ff88; color: #00ff88; width: 100px; height: 100px;">CORE</div>
+                <div class="touch-btn" id="btn-gas" style="border-color: #00ff88; color: #00ff88; width: 120px; height: 120px; font-size: 20px;">CORE</div>
             </div>
         </div>
     </div>
 
     <div id="game-over">
-        <h1 style="font-size: 60px; color: #ff0055; text-shadow: 0 0 20px #ff0055; font-family: monospace;">LINK_LOST</h1>
+        <h1 id="game-over-title" style="font-size: 60px; color: #ff0055; text-shadow: 0 0 20px #ff0055; font-family: monospace;">LINK_LOST</h1>
         <div id="final-score" style="font-size: 24px; margin-bottom: 30px; color: #00f2ff;">0.00 LY</div>
         <button class="btn-glow" onclick="restartGame()">REBOOT</button>
     </div>
 
     <script>
         let scene, camera, renderer, car, clock;
-        let speed = 0, health = 100, score = 0;
-        let isGameOver = false, isGameStarted = false, isFlightMode = false;
+        let speed = 0, health = 100, score = 0, coins = 0;
+        let isGameOver = false, isGameStarted = false, isFlightMode = false, isShopOpen = false;
+        let offTrackTimer = 0;
         
-        const keys = { w: false, s: false, a: false, d: false, space: false };
-        const traffic = [], worldItems = [];
+        // Stats and Multipliers
+        let maxSpeedLimit = 2.2;
+        let accelerationRate = 0.035;
+        let currentCarType = 'default';
+        let ownedCars = ['default'];
+
+        const keys = { w: false, s: false, a: false, d: false };
+        const traffic = [], worldItems = [], dataCoins = [], monoliths = [];
         const collisionBox = new THREE.Box3(), tempBox = new THREE.Box3();
         
         const ROAD_WIDTH = 26, WORLD_END = 12000;
         const BIOMES = [
-            { name: "CYBER_COAST", start: 0, color: 0x00f2ff, fog: 0x020205 },
-            { name: "DATA_VILLAGE", start: 1500, color: 0x00ff88, fog: 0x020502 },
+            { name: "CYBER_COAST", start: 0, color: 0x00f2ff, fog: 0x010105 },
+            { name: "DATA_VILLAGE", start: 1500, color: 0x00ff88, fog: 0x010501 },
             { name: "SULFUR_VOID", start: 3000, color: 0xffff00, fog: 0x050500 },
-            { name: "CRYPTO_GLACIER", start: 5000, color: 0x0088ff, fog: 0x000205 },
-            { name: "MAGMA_KERNEL", start: 8500, color: 0xff0055, fog: 0x050002 } // Fixed syntax error here
+            { name: "CRYPTO_GLACIER", start: 5000, color: 0x0088ff, fog: 0x000105 },
+            { name: "MAGMA_KERNEL", start: 8500, color: 0xff0055, fog: 0x050001 }
         ];
 
         function getRoadX(z) {
@@ -181,35 +320,77 @@
             return 0;
         }
 
-        function createBeautifulCar(colorValue, isPlayer = false) {
+        function createCarMesh(type, colorValue, isPlayer = false) {
             const carGroup = new THREE.Group();
             const bodyMat = new THREE.MeshStandardMaterial({ 
                 color: colorValue, 
                 emissive: colorValue, 
-                emissiveIntensity: isPlayer ? 1 : 0.5, 
-                wireframe: true 
+                emissiveIntensity: isPlayer ? 4 : 2, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.8
             });
-            const coreMat = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 1, roughness: 0 });
+
+            let bodyGeo, cabinGeo;
+            if (type === 'bmw') {
+                bodyGeo = new THREE.BoxGeometry(2.0, 0.7, 4.4);
+                cabinGeo = new THREE.BoxGeometry(1.4, 0.6, 1.8);
+            } else if (type === 'ferrari') {
+                bodyGeo = new THREE.BoxGeometry(2.2, 0.5, 4.6);
+                cabinGeo = new THREE.BoxGeometry(1.3, 0.4, 1.5);
+            } else if (type === 'lambo') {
+                bodyGeo = new THREE.BoxGeometry(2.3, 0.45, 4.8);
+                cabinGeo = new THREE.BoxGeometry(1.2, 0.4, 1.6);
+            } else {
+                bodyGeo = new THREE.BoxGeometry(1.9, 0.6, 4.2);
+                cabinGeo = new THREE.BoxGeometry(1.2, 0.5, 1.4);
+            }
             
-            const shell = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.5, 4), bodyMat);
-            shell.position.y = 0.5;
+            const shell = new THREE.Mesh(bodyGeo, bodyMat);
+            shell.position.y = bodyGeo.parameters.height/2;
             carGroup.add(shell);
 
-            const core = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.4, 3.8), coreMat);
-            core.position.y = 0.5;
-            carGroup.add(core);
+            const cabin = new THREE.Mesh(cabinGeo, bodyMat);
+            cabin.position.set(0, bodyGeo.parameters.height + cabinGeo.parameters.height/2 - 0.1, 0.3);
+            carGroup.add(cabin);
 
-            const glass = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.4, 1.2), bodyMat);
-            glass.position.set(0, 0.8, 0.2);
-            carGroup.add(glass);
+            if (type !== 'default') {
+                const wing = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.1, 0.6), bodyMat);
+                wing.position.set(0, bodyGeo.parameters.height + 0.3, -1.8);
+                carGroup.add(wing);
+            }
 
             if (isPlayer) {
-                const glow = new THREE.PointLight(colorValue, 4, 15);
-                glow.position.set(0, 0.5, 0);
-                carGroup.add(glow);
+                const headLight1 = new THREE.PointLight(colorValue, 10, 20);
+                headLight1.position.set(0.6, 0.5, 2.5);
+                carGroup.add(headLight1);
+                const headLight2 = headLight1.clone();
+                headLight2.position.x = -0.6;
+                carGroup.add(headLight2);
+                
+                const trailLight = new THREE.PointLight(0xffffff, 5, 10);
+                trailLight.position.set(0, 0.5, -2);
+                carGroup.add(trailLight);
+                carGroup.userData.thruster = trailLight;
             }
 
             return carGroup;
+        }
+
+        function createNeonCoin(color = 0xffff00) {
+            const group = new THREE.Group();
+            const ringGeo = new THREE.TorusGeometry(1.2, 0.15, 8, 24);
+            const ringMat = new THREE.MeshBasicMaterial({ color: color, wireframe: true });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            group.add(ring);
+            
+            const core = new THREE.Mesh(new THREE.OctahedronGeometry(0.6), new THREE.MeshBasicMaterial({ color: color }));
+            group.add(core);
+            
+            const light = new THREE.PointLight(color, 5, 12);
+            group.add(light);
+            
+            return group;
         }
 
         function buildBiomes() {
@@ -218,11 +399,11 @@
                 const biome = [...BIOMES].reverse().find(b => z >= b.start);
                 const x1 = getRoadX(z), x2 = getRoadX(z + SEGMENT_SIZE);
                 
-                const roadGeo = new THREE.PlaneGeometry(ROAD_WIDTH, SEGMENT_SIZE + 2, 4, 4);
+                const roadGeo = new THREE.PlaneGeometry(ROAD_WIDTH, SEGMENT_SIZE + 2, 4, 10);
                 const roadMat = new THREE.MeshStandardMaterial({ 
                     color: 0x000000, 
                     emissive: biome.color, 
-                    emissiveIntensity: 0.3,
+                    emissiveIntensity: 0.8,
                     wireframe: true 
                 });
                 const road = new THREE.Mesh(roadGeo, roadMat);
@@ -231,32 +412,46 @@
                 road.position.set((x1 + x2) / 2, 0.05, z + SEGMENT_SIZE / 2);
                 scene.add(road);
 
-                // Railings
                 const railMat = new THREE.MeshBasicMaterial({ color: biome.color });
-                const lRail = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.8, SEGMENT_SIZE), railMat);
-                lRail.position.set(x1 - ROAD_WIDTH/2, 0.4, z + SEGMENT_SIZE/2);
+                const lRail = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.2, SEGMENT_SIZE), railMat);
+                lRail.position.set(x1 - ROAD_WIDTH/2, 0.6, z + SEGMENT_SIZE/2);
                 scene.add(lRail);
                 const rRail = lRail.clone();
                 rRail.position.x = x1 + ROAD_WIDTH/2;
                 scene.add(rRail);
 
-                if (z % 300 === 0) {
-                    const h = 40 + Math.random() * 80;
-                    const mono = new THREE.Mesh(
-                        new THREE.BoxGeometry(8, h, 8),
-                        new THREE.MeshBasicMaterial({ color: biome.color, wireframe: true })
-                    );
+                if (z % 250 === 0) {
+                    const h = 50 + Math.random() * 100;
+                    const monoGeo = new THREE.BoxGeometry(10, h, 10);
+                    const monoMat = new THREE.MeshStandardMaterial({ 
+                        color: biome.color, 
+                        emissive: biome.color, 
+                        emissiveIntensity: 2, 
+                        wireframe: true,
+                        transparent: true,
+                        opacity: 0.6
+                    });
+                    const mono = new THREE.Mesh(monoGeo, monoMat);
                     const side = Math.random() > 0.5 ? 1 : -1;
-                    mono.position.set(x1 + (50 + Math.random() * 40) * side, h/2, z);
+                    mono.position.set(x1 + (70 + Math.random() * 50) * side, h/2, z);
                     scene.add(mono);
+                    monoliths.push({ mesh: mono, base: 2 });
+                }
+
+                if (z % 180 === 0) {
+                    const coin = createNeonCoin();
+                    const cx = x1 + (Math.random() - 0.5) * (ROAD_WIDTH - 6);
+                    coin.position.set(cx, 2, z + Math.random() * 40);
+                    scene.add(coin);
+                    dataCoins.push(coin);
                 }
             }
         }
 
         function init() {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x020205);
-            scene.fog = new THREE.Fog(0x020205, 50, 600);
+            scene.background = new THREE.Color(0x010103);
+            scene.fog = new THREE.Fog(0x010103, 10, 800);
             
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -264,22 +459,93 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             document.body.appendChild(renderer.domElement);
 
-            scene.add(new THREE.AmbientLight(0x404040, 1.5));
+            const skyGrid = new THREE.GridHelper(5000, 50, 0x00f2ff, 0x002222);
+            skyGrid.position.y = 400;
+            scene.add(skyGrid);
+
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
             buildBiomes();
-            car = createBeautifulCar(0x00f2ff, true);
+            car = createCarMesh('default', 0x00f2ff, true);
             scene.add(car);
 
-            for (let i = 0; i < 60; i++) {
-                const tCar = createBeautifulCar(0xff0055);
+            for (let i = 0; i < 70; i++) {
+                const colors = [0xff0055, 0x00ff88, 0xffff00, 0x0088ff];
+                const tCar = createCarMesh('default', colors[Math.floor(Math.random() * colors.length)]);
                 const z = Math.random() * WORLD_END;
-                tCar.position.set(getRoadX(z) + (Math.random() > 0.5 ? 6 : -6), 0, z);
-                tCar.userData.speed = 0.3 + Math.random() * 0.4;
+                const laneOffset = (Math.random() > 0.5 ? 6 : -6);
+                tCar.position.set(getRoadX(z) + laneOffset, 0, z);
+                tCar.userData.speed = 0.4 + Math.random() * 0.5;
+                tCar.userData.laneOffset = laneOffset;
                 scene.add(tCar); traffic.push(tCar);
             }
 
             initControls();
             animate();
+        }
+
+        function toggleShop() {
+            if (isGameOver) return;
+            isShopOpen = !isShopOpen;
+            document.getElementById('shop-menu').style.display = isShopOpen ? 'flex' : 'none';
+            updateShopUI();
+        }
+
+        function updateShopUI() {
+            document.getElementById('shop-balance').innerText = `DATA: ${coins}`;
+            ['bmw', 'ferrari', 'lambo'].forEach(id => {
+                const btn = document.getElementById(`car-${id}`);
+                if (ownedCars.includes(id)) {
+                    btn.innerText = (currentCarType === id) ? "ACTIVE" : "EQUIP";
+                    btn.className = (currentCarType === id) ? "buy-btn owned" : "buy-btn";
+                    btn.disabled = (currentCarType === id);
+                }
+            });
+        }
+
+        function buyUpgrade(type, cost) {
+            if (coins >= cost) {
+                coins -= cost;
+                if (type === 'repair') health = Math.min(100, health + 50);
+                updateShopUI();
+                document.getElementById('coin-counter').innerText = `DATA: ${coins}`;
+            }
+        }
+
+        function buyCar(type, cost, color, speedLimit, accel) {
+            if (ownedCars.includes(type)) {
+                equipCar(type, color, speedLimit, accel);
+                return;
+            }
+            if (coins >= cost) {
+                coins -= cost;
+                ownedCars.push(type);
+                equipCar(type, color, speedLimit, accel);
+                updateShopUI();
+                document.getElementById('coin-counter').innerText = `DATA: ${coins}`;
+            }
+        }
+
+        function equipCar(type, color, speedLimit, accel) {
+            const oldPos = car.position.clone();
+            const oldRot = car.rotation.clone();
+            scene.remove(car);
+            currentCarType = type;
+            maxSpeedLimit = speedLimit;
+            accelerationRate = accel;
+            car = createCarMesh(type, color, true);
+            car.position.copy(oldPos);
+            car.rotation.copy(oldRot);
+            scene.add(car);
+            updateShopUI();
+        }
+
+        function toggleFlight() {
+            isFlightMode = !isFlightMode;
+            const btn = document.getElementById('btn-flight');
+            btn.style.background = isFlightMode ? '#ff00ff' : '';
+            btn.style.color = isFlightMode ? '#000' : '';
+            btn.style.boxShadow = isFlightMode ? '0 0 40px #ff00ff' : '';
         }
 
         function initControls() {
@@ -295,10 +561,10 @@
                 let dx = touch.clientX - centerX;
                 let dy = touch.clientY - centerY;
                 const dist = Math.sqrt(dx*dx + dy*dy);
-                const maxDist = 45;
+                const maxDist = 55;
                 if (dist > maxDist) { dx = (dx / dist) * maxDist; dy = (dy / dist) * maxDist; }
                 knob.style.transform = `translate(${dx}px, ${dy}px)`;
-                keys.a = dx < -15; keys.d = dx > 15;
+                keys.a = dx < -20; keys.d = dx > 20;
             };
 
             joystick.addEventListener('touchstart', (e) => { e.preventDefault(); isTouching = true; handleJoystick(e); });
@@ -313,27 +579,28 @@
                 el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
                 el.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
             };
-            setupBtn('btn-gas', 'w'); setupBtn('btn-brake', 's'); setupBtn('btn-drift', 'space');
+            setupBtn('btn-gas', 'w'); setupBtn('btn-brake', 's');
+            
             document.getElementById('btn-flight').addEventListener('touchstart', (e) => {
-                e.preventDefault(); isFlightMode = !isFlightMode;
-                document.getElementById('btn-flight').style.background = isFlightMode ? '#ff00ff' : '';
-                document.getElementById('btn-flight').style.color = isFlightMode ? '#000' : '';
+                e.preventDefault();
+                toggleFlight();
             });
             
-            // Keyboard fallbacks
             window.addEventListener('keydown', e => { 
-                if (e.key.toLowerCase() === 'w') keys.w = true;
-                if (e.key.toLowerCase() === 's') keys.s = true;
-                if (e.key.toLowerCase() === 'a') keys.a = true;
-                if (e.key.toLowerCase() === 'd') keys.d = true;
-                if (e.key === ' ') keys.space = true;
+                const k = e.key.toLowerCase();
+                if (k === 'w') keys.w = true;
+                if (k === 's') keys.s = true;
+                if (k === 'a') keys.a = true;
+                if (k === 'd') keys.d = true;
+                if (k === 'f') toggleFlight();
+                if (k === 'm' || k === 'g') toggleShop();
             });
             window.addEventListener('keyup', e => {
-                if (e.key.toLowerCase() === 'w') keys.w = false;
-                if (e.key.toLowerCase() === 's') keys.s = false;
-                if (e.key.toLowerCase() === 'a') keys.a = false;
-                if (e.key.toLowerCase() === 'd') keys.d = false;
-                if (e.key === ' ') keys.space = false;
+                const k = e.key.toLowerCase();
+                if (k === 'w') keys.w = false;
+                if (k === 's') keys.s = false;
+                if (k === 'a') keys.a = false;
+                if (k === 'd') keys.d = false;
             });
         }
 
@@ -342,20 +609,37 @@
             isGameStarted = true;
         }
 
+        function triggerGameOver(reason = "LINK_LOST") {
+            isGameOver = true;
+            document.getElementById('game-over-title').innerText = reason;
+            document.getElementById('game-over').style.display = 'flex';
+            document.getElementById('final-score').innerText = `${((score+coins)/1000).toFixed(2)} LY`;
+            document.getElementById('warning-overlay').style.display = 'none';
+        }
+
         function restartGame() {
             isGameOver = false; health = 100; speed = 0; score = 0;
+            offTrackTimer = 0;
             car.position.set(0, 0, 0); car.rotation.set(0, 0, 0);
+            if (isFlightMode) toggleFlight();
             document.getElementById('game-over').style.display = 'none';
+            dataCoins.forEach(c => c.visible = true);
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            if (!isGameStarted || isGameOver) return;
+            if (!isGameStarted || isGameOver || isShopOpen) return;
 
-            if (keys.w) speed += 0.03;
-            if (keys.s) speed -= 0.04;
+            const time = Date.now() * 0.005;
+
+            if (keys.w) speed += accelerationRate;
+            if (keys.s) speed -= 0.05;
             speed *= 0.985;
-            speed = Math.max(-0.4, Math.min(2.0, speed));
+            speed = Math.max(-0.4, Math.min(maxSpeedLimit, speed));
+
+            if (car.userData.thruster) {
+                car.userData.thruster.intensity = (speed > 0.1) ? (5 + Math.sin(time*3)*2) : 1;
+            }
 
             if (isFlightMode) {
                 car.position.y = THREE.MathUtils.lerp(car.position.y, 15, 0.05);
@@ -364,39 +648,73 @@
             }
 
             if (Math.abs(speed) > 0.01) {
-                const turnFactor = keys.space ? 1.8 : 1;
-                if (keys.a) car.rotation.y += 0.04 * turnFactor;
-                if (keys.d) car.rotation.y -= 0.04 * turnFactor;
+                if (keys.a) car.rotation.y += 0.045;
+                if (keys.d) car.rotation.y -= 0.045;
             }
 
             car.translateZ(speed);
-            if (car.position.z > WORLD_END) car.position.z = 0;
+            
+            const currentRoadCenter = getRoadX(car.position.z);
+            const distFromCenter = Math.abs(car.position.x - currentRoadCenter);
+            
+            if (distFromCenter > (ROAD_WIDTH / 2) + 2 && !isFlightMode) {
+                offTrackTimer += 0.016;
+                document.getElementById('warning-overlay').style.display = 'block';
+                if (offTrackTimer > 1.2) {
+                    triggerGameOver("TRACK_LOST");
+                }
+            } else {
+                offTrackTimer = 0;
+                document.getElementById('warning-overlay').style.display = 'none';
+            }
+
+            if (car.position.z > WORLD_END) {
+                car.position.z = 0;
+                dataCoins.forEach(c => c.visible = true);
+            }
             if (car.position.z < 0) car.position.z = WORLD_END;
 
-            // Update Biome UI and World FX
-            const currentBiome = [...BIOMES].reverse().find(b => car.position.z >= b.start);
+            const currentBiome = BIOMES.slice().reverse().find(b => car.position.z >= b.start);
             if (currentBiome) {
                 document.getElementById('location-display').innerText = currentBiome.name;
                 document.getElementById('location-display').style.borderColor = '#' + currentBiome.color.toString(16).padStart(6, '0');
                 scene.fog.color.set(currentBiome.fog);
             }
 
-            // Traffic & Collision
+            monoliths.forEach(m => {
+                m.mesh.material.emissiveIntensity = m.base + Math.sin(time + m.mesh.position.z * 0.01) * 1.5;
+            });
+
             collisionBox.setFromObject(car);
+
+            dataCoins.forEach(c => {
+                c.rotation.y += 0.06;
+                c.position.y = 2 + Math.sin(time * 0.8) * 0.5;
+                if (c.visible && Math.abs(car.position.z - c.position.z) < 5) {
+                    tempBox.setFromObject(c);
+                    if (collisionBox.intersectsBox(tempBox)) {
+                        c.visible = false;
+                        coins += 100;
+                        score += 2000;
+                        document.getElementById('coin-counter').innerText = `DATA: ${coins}`;
+                    }
+                }
+            });
+
             traffic.forEach(t => {
                 t.position.z += t.userData.speed;
                 if (t.position.z > WORLD_END) t.position.z = 0;
-                
-                if (Math.abs(car.position.z - t.position.z) < 10 && car.position.y < 3) {
+                const roadCurveX = getRoadX(t.position.z);
+                t.position.x = roadCurveX + t.userData.laneOffset;
+                const lookAheadZ = t.position.z + 5;
+                const lookAheadX = getRoadX(lookAheadZ) + t.userData.laneOffset;
+                t.rotation.y = Math.atan2(lookAheadX - t.position.x, 5);
+                if (Math.abs(car.position.z - t.position.z) < 10 && car.position.y < 4) {
                     tempBox.setFromObject(t);
                     if (collisionBox.intersectsBox(tempBox)) {
-                        health -= 1.5;
-                        speed *= 0.4;
-                        if (health <= 0) {
-                            isGameOver = true;
-                            document.getElementById('game-over').style.display = 'flex';
-                            document.getElementById('final-score').innerText = `${(score/1000).toFixed(2)} LY`;
-                        }
+                        health -= 2.0;
+                        speed *= 0.3;
+                        if (health <= 0) triggerGameOver("INTEGRITY_0");
                     }
                 }
             });
@@ -405,8 +723,8 @@
             document.getElementById('speedometer').innerText = Math.floor(Math.abs(speed) * 300).toString().padStart(3, '0');
             document.getElementById('crash-counter').innerText = `INTEGRITY: ${Math.max(0, Math.ceil(health))}%`;
 
-            const camDist = 12 + (speed * 4);
-            const camOffset = new THREE.Vector3(0, 4, -camDist).applyMatrix4(car.matrixWorld);
+            const camDist = 12 + (speed * 5);
+            const camOffset = new THREE.Vector3(0, 5, -camDist).applyMatrix4(car.matrixWorld);
             camera.position.lerp(camOffset, 0.1);
             camera.lookAt(car.position.x, car.position.y + 1, car.position.z + 5);
 
