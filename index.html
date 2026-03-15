@@ -112,6 +112,23 @@
             text-transform: uppercase;
         }
 
+        /* Boost Overlay */
+        #boost-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff00ff;
+            font-size: 48px;
+            font-weight: bold;
+            display: none;
+            text-shadow: 0 0 30px #ff00ff;
+            z-index: 150;
+            pointer-events: none;
+            font-family: monospace;
+            letter-spacing: 10px;
+        }
+
         /* Mobile Controls */
         #mobile-controls {
             position: absolute;
@@ -267,6 +284,7 @@
     </div>
 
     <div id="warning-overlay">OFF TRACK: RE-ENTER OR DISCONNECT</div>
+    <div id="boost-indicator">NITRO_ENGAGED</div>
 
     <div id="mobile-controls">
         <div id="joystick-container">
@@ -293,7 +311,7 @@
         let scene, camera, renderer, car, clock;
         let speed = 0, health = 100, score = 0, coins = 0;
         let isGameOver = false, isGameStarted = false, isFlightMode = false, isShopOpen = false;
-        let offTrackTimer = 0;
+        let offTrackTimer = 0, boostTimer = 0;
         
         // Stats and Multipliers
         let maxSpeedLimit = 2.2;
@@ -302,7 +320,7 @@
         let ownedCars = ['default'];
 
         const keys = { w: false, s: false, a: false, d: false };
-        const traffic = [], worldItems = [], dataCoins = [], monoliths = [];
+        const traffic = [], worldItems = [], dataCoins = [], monoliths = [], boosters = [];
         const collisionBox = new THREE.Box3(), tempBox = new THREE.Box3();
         
         const ROAD_WIDTH = 26, WORLD_END = 12000;
@@ -393,6 +411,33 @@
             return group;
         }
 
+        function createBooster() {
+            const group = new THREE.Group();
+            // Arrow pointing forward
+            const shape = new THREE.Shape();
+            shape.moveTo(0, 2.5);
+            shape.lineTo(1.5, 0);
+            shape.lineTo(0.7, 0);
+            shape.lineTo(0.7, -1.5);
+            shape.lineTo(-0.7, -1.5);
+            shape.lineTo(-0.7, 0);
+            shape.lineTo(-1.5, 0);
+            shape.lineTo(0, 2.5);
+
+            const geo = new THREE.ShapeGeometry(shape);
+            const mat = new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.DoubleSide, wireframe: true });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.scale.set(1.5, 1.5, 1.5);
+            group.add(mesh);
+
+            const light = new THREE.PointLight(0xff00ff, 10, 15);
+            light.position.y = 1;
+            group.add(light);
+            
+            return group;
+        }
+
         function buildBiomes() {
             const SEGMENT_SIZE = 50;
             for (let z = 0; z < WORLD_END; z += SEGMENT_SIZE) {
@@ -444,6 +489,15 @@
                     coin.position.set(cx, 2, z + Math.random() * 40);
                     scene.add(coin);
                     dataCoins.push(coin);
+                }
+
+                // Add Boosters
+                if (z % 400 === 0 && z > 200) {
+                    const boost = createBooster();
+                    const bx = x1 + (Math.random() - 0.5) * (ROAD_WIDTH - 8);
+                    boost.position.set(bx, 0.2, z + 25);
+                    scene.add(boost);
+                    boosters.push(boost);
                 }
             }
         }
@@ -615,15 +669,18 @@
             document.getElementById('game-over').style.display = 'flex';
             document.getElementById('final-score').innerText = `${((score+coins)/1000).toFixed(2)} LY`;
             document.getElementById('warning-overlay').style.display = 'none';
+            document.getElementById('boost-indicator').style.display = 'none';
         }
 
         function restartGame() {
             isGameOver = false; health = 100; speed = 0; score = 0;
-            offTrackTimer = 0;
+            offTrackTimer = 0; boostTimer = 0;
             car.position.set(0, 0, 0); car.rotation.set(0, 0, 0);
             if (isFlightMode) toggleFlight();
             document.getElementById('game-over').style.display = 'none';
+            document.getElementById('boost-indicator').style.display = 'none';
             dataCoins.forEach(c => c.visible = true);
+            boosters.forEach(b => b.visible = true);
         }
 
         function animate() {
@@ -632,13 +689,32 @@
 
             const time = Date.now() * 0.005;
 
+            // Engine & Movement
             if (keys.w) speed += accelerationRate;
             if (keys.s) speed -= 0.05;
-            speed *= 0.985;
-            speed = Math.max(-0.4, Math.min(maxSpeedLimit, speed));
+            
+            // Apply Boost
+            if (boostTimer > 0) {
+                boostTimer -= 0.016;
+                speed = Math.max(speed, maxSpeedLimit * 2.0);
+                document.getElementById('boost-indicator').style.display = 'block';
+                camera.fov = THREE.MathUtils.lerp(camera.fov, 100, 0.1);
+            } else {
+                speed *= 0.985;
+                document.getElementById('boost-indicator').style.display = 'none';
+                camera.fov = THREE.MathUtils.lerp(camera.fov, 75, 0.05);
+            }
+            camera.updateProjectionMatrix();
+
+            speed = Math.max(-0.4, speed);
+            // Cap speed unless boosting
+            if (boostTimer <= 0) {
+                speed = Math.min(maxSpeedLimit, speed);
+            }
 
             if (car.userData.thruster) {
                 car.userData.thruster.intensity = (speed > 0.1) ? (5 + Math.sin(time*3)*2) : 1;
+                car.userData.thruster.color.set(boostTimer > 0 ? 0xff00ff : 0xffffff);
             }
 
             if (isFlightMode) {
@@ -671,6 +747,7 @@
             if (car.position.z > WORLD_END) {
                 car.position.z = 0;
                 dataCoins.forEach(c => c.visible = true);
+                boosters.forEach(b => b.visible = true);
             }
             if (car.position.z < 0) car.position.z = WORLD_END;
 
@@ -687,6 +764,7 @@
 
             collisionBox.setFromObject(car);
 
+            // Collect Coins
             dataCoins.forEach(c => {
                 c.rotation.y += 0.06;
                 c.position.y = 2 + Math.sin(time * 0.8) * 0.5;
@@ -701,6 +779,18 @@
                 }
             });
 
+            // Hit Boosters
+            boosters.forEach(b => {
+                b.rotation.y = Math.sin(time * 2) * 0.2;
+                if (b.visible && Math.abs(car.position.z - b.position.z) < 5) {
+                    tempBox.setFromObject(b);
+                    if (collisionBox.intersectsBox(tempBox)) {
+                        b.visible = false;
+                        boostTimer = 2.0; // 2 seconds of boost
+                    }
+                }
+            });
+
             traffic.forEach(t => {
                 t.position.z += t.userData.speed;
                 if (t.position.z > WORLD_END) t.position.z = 0;
@@ -709,6 +799,7 @@
                 const lookAheadZ = t.position.z + 5;
                 const lookAheadX = getRoadX(lookAheadZ) + t.userData.laneOffset;
                 t.rotation.y = Math.atan2(lookAheadX - t.position.x, 5);
+                
                 if (Math.abs(car.position.z - t.position.z) < 10 && car.position.y < 4) {
                     tempBox.setFromObject(t);
                     if (collisionBox.intersectsBox(tempBox)) {
